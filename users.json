@@ -1,0 +1,7 @@
+[
+    { "id": 1, "fullName": "Jean Dupont", "email": "jean@email.com", "password": "pass1" },
+    { "id": 2, "fullName": "Marie Curie", "email": "marie@email.com", "password": "pass2" },
+    { "id": 3, "fullName": "Paul Martin", "email": "paul@email.com", "password": "pass3" },
+    { "id": 4, "fullName": "Alice Durand", "email": "alice@email.com", "password": "pass4" },
+    { "id": 5, "fullName": "Luc Petit", "email": "luc@email.com", "password": "pass5" }
+]

@@ -1,0 +1,32 @@
+•
+<!doctype html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Connexion - Boutique Demo</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <h1>Connexion</h1>
+
+    <!-- Le formulaire -->
+    <form onsubmit="verifierConnexion(event)">
+        <label>Email :</label><br />
+        <input type="text" id="email" required /><br />
+
+        <label>Mot de passe :</label><br />
+        <input type="password" id="mdp" required /><br />
+
+        <button type="submit">Se connecter</button>
+    </form>
+
+    <!-- La zone de retour pour le succès ou l'erreur -->
+    <div id="message-retour" style="margin-top: 20px; font-weight: bold"></div>
+
+    <!-- Le lien vers ton fichier JavaScript -->
+    <script src="auth.js"></script>
+</body>
+
+</html>

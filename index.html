@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boutique Demo - Accueil</title>
+    <link rel="stylesheet" href="style.css">
+    <meta name="description" content="Bienvenue sur notre boutique en ligne fictive.">
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">
+            <h1>Boutique Demo</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#accueil">Accueil</a></li>
+                <li><a href="#catalogue">Catalogue</a></li>
+                <li><a href="#panier">Panier</a></li>
+                <li><a href="connexion.html">Connexion</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="accueil">
+            <h2>Bienvenue</h2>
+            <p>Découvrez notre sélection de produits.</p>
+        </section>
+
+        <section id="catalogue">
+            <h2>Catalogue</h2>
+            <div id="filtres">
+                <input type="text" id="recherche" placeholder="Rechercher...">
+                <select id="categorie">
+                    <option value="all">Toutes catégories</option>
+                </select>
+            </div>
+            <div id="grille-produits" class="grid-container"></div>
+        </section>
+
+        <section id="panier">
+            <h2>Votre Panier</h2>
+            <table id="tableau-panier">
+                <thead>
+                    <tr>
+                        <th>Produit</th>
+                        <th>Prix</th>
+                        <th>Quantité</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="panier-body"></tbody>
+            </table>
+            <div class="total-section">
+                <p>Total : <span id="total-panier">0 XAF</span></p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Boutique Demo - Tous droits réservés.</p>
+    </footer>
+
+    <script src="shop.js"></script>
+</body>
+
+</html>

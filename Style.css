@@ -1,0 +1,61 @@
+/* Mon fichier CSS pour la boutique */
+
+
+/* Pour bien voir les blocs, j'ai mis des couleurs partout */
+
+body {
+    font-family: Arial;
+    background-color: white;
+}
+
+
+/* Le haut de la page, en rouge pour le repérer */
+
+header {
+    background-color: red;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+
+/* Mes sections, en bleu pour voir leurs limites */
+
+section {
+    padding: 20px;
+    margin: 20px;
+    border: 2px solid blue;
+    background-color: lightblue;
+}
+
+
+/* La zone de la grille, en vert pour voir le conteneur */
+
+.grid-container {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: green;
+    padding: 15px;
+    gap: 10px;
+    /* Pour espacer mes cartes */
+}
+
+
+/* Une seule carte de produit, en jaune */
+
+.produit-card {
+    border: 2px solid orange;
+    background-color: yellow;
+    padding: 10px;
+    width: 200px;
+}
+
+
+/* Le pied de page, en gris */
+
+footer {
+    background-color: gray;
+    color: white;
+    text-align: center;
+    padding: 15px;
+}
