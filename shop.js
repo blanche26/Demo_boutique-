@@ -69,7 +69,8 @@ function afficherProduits(liste) {
             <div class="produit-card">
                 <h3>${p.name}</h3>
                 <p>${formatPrice(p.price)}</p>
-                <button onclick='ajouterAuPanier(${JSON.stringify(p)})'>Ajouter</button>
+                 <button onclick='ajouterAuPanier(${JSON.stringify(p).replace(/"/g, "&quot;")})'>Ajouter</button>
+                 
             </div>
         `;
     });
