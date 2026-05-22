@@ -43,6 +43,7 @@ function trierProduits(mode) {
 let panier = [];
 
 function ajouterAuPanier(produit) {
+   alert("Produit ajouté ! Total : " + calculerTotal() + " XAF");
     let existant = panier.find(item => item.id === produit.id);
     if (existant) {
         existant.quantite++;
