@@ -35,7 +35,8 @@
         <section id="catalogue">
             <h2>Catalogue</h2>
             <div id="filtres">
-                <input type="text" id="recherche" placeholder="Rechercher...">
+                <input type="text" placeholder="Rechercher un produit..." oninput="filtrerProduits(this.value)">
+                
                 <select id="categorie">
                     <option value="all">Toutes catégories</option>
                 </select>
