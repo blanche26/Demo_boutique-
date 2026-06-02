@@ -1,4 +1,3 @@
-<html>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -15,8 +14,7 @@
     <main>
         <section id="catalogue" style="margin: 20px 0;">
             <h2>Catalogue des produits</h2>
-            <div id="charge_produit">
-                </div>
+            <div id="charge_produit"></div>
         </section>
 
         <section id="panier" style="margin-top: 30px; padding: 10px; background-color: #eee;">
@@ -32,8 +30,7 @@
                         <th>Actions</th>
                     </tr>
                 </thead>
-                <tbody id="lignes-du-panier">
-                    </tbody>
+                <tbody id="lignes-du-panier"></tbody>
             </table>
 
             <p style="font-size: 18px; font-weight: bold; margin-top: 15px;">
@@ -47,19 +44,36 @@
     </main>
 
     <script>
-        // Liste des produits écrite directement ici
-        var produits = [
-            {id: 1, name: "Gants", category: "Mode", price: 2000},
-            {id: 2, name: "Bijou Fantaisie", category: "Accessoires", price: 6000},
-            {id: 3, name: "Casquette stylee", category: "Mode", price: 7000}
-        ];
-
+        // Variables globales (le tableau de produits se remplit via le JSON)
+        var produits = [];
         var panier = [];
 
-        // Lance l'affichage dès que la page s'ouvre
+        // Lance le chargement dès que la page s'ouvre
         window.onload = function() {
-            afficherLeCatalogue();
+            chargerProduits();
         };
+
+        // Charger les données depuis le fichier products.json
+        function chargerProduits() {
+            fetch("products.json")
+                .then(function(reponse) {
+                    return reponse.json();
+                })
+                .then(function(donnees) {
+                    produits = donnees;
+                    afficherLeCatalogue();
+                })
+                .catch(function(erreur) {
+                    console.log("Erreur de chargement du JSON, utilisation des données de secours");
+                    // Secours si le téléphone bloque le fetch en local
+                    produits = [
+                        {id: 1, name: "Gants", category: "Mode", price: 2000},
+                        {id: 2, name: "Bijou Fantaisie", category: "Accessoires", price: 6000},
+                        {id: 3, name: "Casquette stylee", category: "Mode", price: 7000}
+                    ];
+                    afficherLeCatalogue();
+                });
+        }
 
         // Affiche les produits sous forme de blocs
         function afficherLeCatalogue() {
@@ -166,4 +180,4 @@
         };
     </script>
 </body>
-</html>
+</html> 
