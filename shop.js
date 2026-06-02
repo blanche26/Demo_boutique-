@@ -17,6 +17,20 @@ window.onload = function() {
             afficherLeCatalogue(resultatFiltre);
         };
     }
+
+    var liens = document.querySelectorAll("header ul li a");
+    for (var i = 0; i < liens.length; i++) {
+        liens[i].onclick = function(e) {
+            var cibleId = this.getAttribute("href");
+            if (cibleId.startsWith("#")) {
+                e.preventDefault();
+                var cibleSection = document.querySelector(cibleId);
+                if (cibleSection) {
+                    cibleSection.scrollIntoView({ behavior: "smooth" });
+                }
+            }
+        };
+    }
 };
 
 function chargerProduits() {
