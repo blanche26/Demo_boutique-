@@ -1,98 +1,156 @@
 /*--- Style.CSS --- */
-/*project boutique Démo - etudiant */
-// Liste de nos produits
-let produits = [
-    {"id": 1, "nom": "Sac à dos étudiant", "prix": 12000},
-    {"id": 2, "nom": "Clé USB 64 Go", "prix": 4500},
-    {"id": 3, "nom": "Cahier de TD 200p", "prix": 1500},
-    {"id": 4, "nom": "Boîte de stylos", "prix": 1000}
-];
+// Variables globales pour stocker nos donnees
+var produits = [];
+var panier = [];
 
-let panier = [];
-
-// Lance l'affichage dès que la page s'ouvre
+// Au chargement de la page, on appelle le fichier JSON
 window.onload = function() {
-    afficherLeCatalogue();
+    chargerProduits();
 };
 
-// Crée les cartes de produits
-function afficherLeCatalogue() {
-    const zoneCatalogue = document.getElementById('charge_produit');
-    if (!zoneCatalogue) return;
-    
-    zoneCatalogue.innerHTML = '';
-    
-    produits.forEach(p => {
-        const carte = document.createElement('div');
-        carte.className = 'carte-produit'; // Utilise la classe CSS
-        
-        carte.innerHTML = `
-            <h4>${p.nom}</h4>
-            <p>Prix : ${p.prix} XAF</p>
-            <button onclick="ajouterAuPanier(${p.id})">Ajouter au panier</button>
-        `;
-        zoneCatalogue.appendChild(carte);
-    });
+// Question 10 : Chargement du fichier JSON avec fetch
+function chargerProduits() {
+    fetch("products.json")
+        .then(function(reponse) {
+            return reponse.json();
+        })
+        .then(function(donnees) {
+            produits = donnees;
+            afficherLeCatalogue();
+        })
+        .catch(function(erreur) {
+            console.log("Erreur de chargement, utilisation du tableau de secours");
+            // Tableau de secours (fallback en dur si le fetch echoue)
+            produits = [
+                {id: 1, name: "Casquette stylee", category: "Mode", price: 7000, image: "casquette.jpg"},
+                {id: 2, name: "Gants", category: "Mode", price: 2000, image: "gants.jpg"}
+            ];
+            afficherLeCatalogue();
+        });
 }
 
-// Gère l'ajout
-function ajouterAuPanier(idDuProduit) {
-    const prodSelectionne = produits.find(p => p.id === idDuProduit);
-    const produitExiste = panier.find(item => item.id === idDuProduit);
+// Question 11 : Fonction formatPrice(prix)
+function formatPrice(prix) {
+    return prix + " XAF";
+}
 
-    if (produitExiste) {
+// Fonction pour afficher les produits dans le catalogue HTML
+function afficherLeCatalogue() {
+    // ATTENTION : On cherche l'element vert ou la zone catalogue de ton HTML
+    // Si dans ton HTML c'est <div id="catalogue-liste">, change le nom ici !
+    var zoneCatalogue = document.getElementById("charge_produit");
+    if (!zoneCatalogue) return;
+    
+    zoneCatalogue.innerHTML = "";
+    
+    // Boucle for classique de niveau L1
+    for (var i = 0; i < produits.length; i++) {
+        var p = produits[i];
+        
+        zoneCatalogue.innerHTML += `
+            <div class="carte-produit">
+                <h4>${p.name}</h4>
+                <p>Categorie : ${p.category}</p>
+                <p>Prix : ${formatPrice(p.price)}</p>
+                <button onclick="ajouterAuPanier(${p.id})">Ajouter au panier</button>
+            </div>
+        `;
+    }
+}
+
+// Question 15 : Ajouter au panier (gestion des quantites)
+function ajouterAuPanier(idDuProduit) {
+    // 1. Trouver le produit dans le catalogue
+    var prodSelectionne = null;
+    for (var i = 0; i < produits.length; i++) {
+        if (produits[i].id == idDuProduit) {
+            prodSelectionne = produits[i];
+        }
+    }
+
+    // 2. Verifier s'il est deja dans le panier
+    var produitExiste = null;
+    for (var j = 0; j < panier.length; j++) {
+        if (panier[j].id == idDuProduit) {
+            produitExiste = panier[j];
+        }
+    }
+
+    if (produitExiste != null) {
         produitExiste.quantite++;
     } else {
         panier.push({
             id: prodSelectionne.id,
-            nom: prodSelectionne.nom,
-            prix: prodSelectionne.prix,
+            name: prodSelectionne.name,
+            price: prodSelectionne.price,
             quantite: 1
         });
     }
     mettreAJourLeRendu();
 }
 
-// Calcule le total et crée les lignes de ton tableau
+// Question 16 & 17 : Remplir le tableau du panier et calculer le total général
 function mettreAJourLeRendu() {
-    const corpsTableau = document.getElementById('lignes-du-panier');
-    const zoneTotal = document.getElementById('total-panier');
+    var corpsTableau = document.getElementById("lignes-du-panier");
+    var zoneTotal = document.getElementById("total-panier");
     
-    corpsTableau.innerHTML = '';
-    let calculTotal = 0;
+    if (!corpsTableau || !zoneTotal) return;
+    
+    corpsTableau.innerHTML = "";
+    var calculTotal = 0;
 
-    panier.forEach(item => {
-        const sousTotal = item.prix * item.quantite;
-        calculTotal += sousTotal;
+    // Boucle for pour generer le tableau ligne par ligne
+    for (var i = 0; i < panier.length; i++) {
+        var item = panier[i];
+        var sousTotal = item.price * item.quantite;
+        calculTotal = calculTotal + sousTotal; // Somme cumulative pour le total général
 
-        const ligne = document.createElement('tr');
-        ligne.innerHTML = `
-            <td>${item.nom}</td>
-            <td>${item.prix} XAF</td>
-            <td>${item.quantite}</td>
-            <td>${sousTotal} XAF</td>
-            <td><button onclick="retirerDuPanier(${item.id})">Retirer</button></td>
+        corpsTableau.innerHTML += `
+            <tr>
+                <td>${item.name}</td>
+                <td>${formatPrice(item.price)}</td>
+                <td>${item.quantite}</td>
+                <td>${formatPrice(sousTotal)}</td>
+                <td>
+                    <button onclick="modifierQuantite(${item.id}, 1)">+</button>
+                    <button onclick="modifierQuantite(${item.id}, -1)">-</button>
+                    <button onclick="supprimerDuPanier(${item.id})">Supprimer</button>
+                </td>
+            </tr>
         `;
-        corpsTableau.appendChild(ligne);
-    });
+    }
 
-    zoneTotal.textContent = calculTotal;
+    zoneTotal.textContent = formatPrice(calculTotal);
 }
 
-// Gère le retrait
-function retirerDuPanier(idDuProduit) {
-    const produitExiste = panier.find(item => item.id === idDuProduit);
-    
-    if (produitExiste.quantite > 1) {
-        produitExiste.quantite--;
-    } else {
-        panier = panier.filter(item => item.id !== idDuProduit);
+// Modifier la quantite avec les boutons + et -
+function modifierQuantite(idDuProduit, valeur) {
+    for (var i = 0; i < panier.length; i++) {
+        if (panier[i].id == idDuProduit) {
+            panier[i].quantite = panier[i].quantite + valeur;
+            if (panier[i].quantite <= 0) {
+                panier.splice(i, 1);
+            }
+        }
     }
     mettreAJourLeRendu();
 }
 
-// Vide le panier
-document.getElementById('vider-panier').addEventListener('click', () => {
-    panier = [];
+// Supprimer complement une ligne du panier
+function supprimerDuPanier(idDuProduit) {
+    for (var i = 0; i < panier.length; i++) {
+        if (panier[i].id == idDuProduit) {
+            panier.splice(i, 1);
+        }
+    }
     mettreAJourLeRendu();
-});
+}
+
+// Bouton Vider le panier
+var boutonVider = document.getElementById("vider-panier");
+if (boutonVider) {
+    boutonVider.onclick = function() {
+        panier = [];
+        mettreAJourLeRendu();
+    };
+}
