@@ -235,8 +235,57 @@ function afficherLeCatalogue() {
         '</div>';
     }
 }
+var produits = [];
+var panier = [];
 
-// Question 15 : Ajouter au panier (gestion des quantites)
+window.onload = function() {
+    chargerProduits();
+    var barre = document.getElementById("barre-recherche");
+    if (barre) {
+        barre.oninput = function() {
+            var saisie = barre.value.toLowerCase();
+            var resultatFiltre = [];
+            for (var i = 0; i < produits.length; i++) {
+                var nomProduit = produits[i].name.toLowerCase();
+                if (nomProduit.indexOf(saisie) !== -1) {
+                    resultatFiltre.push(produits[i]);
+                }
+            }
+            afficherLeCatalogue(resultatFiltre);
+        };
+    }
+};
+
+function chargerProduits() {
+    fetch("products.json")
+        .then(function(reponse) {
+            return reponse.json();
+        })
+        .then(function(donnees) {
+            produits = donnees;
+            afficherLeCatalogue(produits);
+        });
+}
+
+function formatPrice(prix) {
+    return prix + " XAF";
+}
+
+function afficherLeCatalogue(listeAAfficher) {
+    var zoneCatalogue = document.getElementById("charge_produit");
+    if (!zoneCatalogue) return;
+    zoneCatalogue.innerHTML = "";
+    var liste = listeAAfficher || produits;
+    for (var i = 0; i < liste.length; i++) {
+        var p = liste[i];
+        zoneCatalogue.innerHTML += '<div class="carte-produit">' +
+            '<h3>' + p.name + '</h3>' +
+            '<p>' + formatPrice(p.price) + '</p>' +
+            '<button onclick="ajouterAuPanier(' + p.id + ')">Ajouter</button>' +
+        '</div>';
+    }
+}
+
 function ajouterAuPanier(idDuProduit) {
     var prodSelectionne = null;
     for (var i = 0; i < produits.length; i++) {
@@ -244,14 +293,12 @@ function ajouterAuPanier(idDuProduit) {
             prodSelectionne = produits[i];
         }
     }
-
     var produitExiste = null;
     for (var j = 0; j < panier.length; j++) {
         if (panier[j].id == idDuProduit) {
             produitExiste = panier[j];
         }
     }
-
     if (produitExiste != null) {
         produitExiste.quantite++;
     } else {
@@ -265,22 +312,16 @@ function ajouterAuPanier(idDuProduit) {
     mettreAJourLeRendu();
 }
 
-// Question 16 & 17 : Remplir le tableau du panier et calculer le total général
 function mettreAJourLeRendu() {
     var corpsTableau = document.getElementById("lignes-du-panier");
     var zoneTotal = document.getElementById("total-panier");
-    
     if (!corpsTableau) return;
-    
     corpsTableau.innerHTML = "";
     var calculTotal = 0;
-
-    // Concaténation pure de L1 pour chaque ligne de tableau `<tr>`
     for (var i = 0; i < panier.length; i++) {
         var item = panier[i];
         var sousTotal = item.price * item.quantite;
         calculTotal = calculTotal + sousTotal;
-
         corpsTableau.innerHTML += '<tr>' +
             '<td>' + item.name + '</td>' +
             '<td>' + formatPrice(item.price) + '</td>' +
@@ -292,13 +333,11 @@ function mettreAJourLeRendu() {
             '</td>' +
         '</tr>';
     }
-
     if (zoneTotal) {
         zoneTotal.textContent = formatPrice(calculTotal);
     }
 }
 
-// Modifier la quantite avec les boutons + et -
 function modifierQuantite(idDuProduit, valeur) {
     for (var i = 0; i < panier.length; i++) {
         if (panier[i].id == idDuProduit) {
@@ -311,7 +350,6 @@ function modifierQuantite(idDuProduit, valeur) {
     mettreAJourLeRendu();
 }
 
-// Vider le panier complet
 var boutonVider = document.getElementById("vider-panier");
 if (boutonVider) {
     boutonVider.onclick = function() {
