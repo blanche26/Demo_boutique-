@@ -165,6 +165,71 @@ function ajouterAuPanier(idDuProduit) {
             prodSelectionne = produits[i];
         }
     }
+// Variables globales pour stocker nos donnees
+var produits = [];
+var panier = [];
+
+// Au chargement de la page, on appelle le fichier JSON
+window.onload = function() {
+    chargerProduits();
+};
+
+// Question 10 : Chargement du fichier JSON avec fetch
+function chargerProduits() {
+    fetch("products.json")
+        .then(function(reponse) {
+            return reponse.json();
+        })
+        .then(function(donnees) {
+            produits = donnees;
+            afficherLeCatalogue();
+        })
+        .catch(function(erreur) {
+            console.log("Erreur de chargement, utilisation du tableau de secours");
+            // Secours direct si le fetch local est bloque
+            produits = [
+                {id: 1, name: "Gants", category: "Mode", price: 2000},
+                {id: 2, name: "Bijou Fantaisie", category: "Accessoires", price: 6000},
+                {id: 3, name: "Casquette stylee", category: "Mode", price: 7000}
+            ];
+            afficherLeCatalogue();
+        });
+}
+
+// Question 11 : Fonction formatPrice(prix)
+function formatPrice(prix) {
+    return prix + " XAF";
+}
+
+// Fonction pour afficher les produits dans le catalogue HTML
+function afficherLeCatalogue() {
+    var zoneCatalogue = document.getElementById("charge_produit");
+    if (!zoneCatalogue) return;
+    
+    zoneCatalogue.innerHTML = "";
+    
+    for (var i = 0; i < produits.length; i++) {
+        var p = produits[i];
+        
+        zoneCatalogue.innerHTML += `
+            <div class="carte-produit" style="border: 1px solid #000; margin: 10px; padding: 10px; background: white;">
+                <h4>${p.name}</h4>
+                <p>Categorie : ${p.category}</p>
+                <p>Prix : ${formatPrice(p.price)}</p>
+                <button onclick="ajouterAuPanier(${p.id})">Ajouter au panier</button>
+            </div>
+        `;
+    }
+}
+
+// Question 15 : Ajouter au panier (gestion des quantites)
+function ajouterAuPanier(idDuProduit) {
+    var prodSelectionne = null;
+    for (var i = 0; i < produits.length; i++) {
+        if (produits[i].id == idDuProduit) {
+            prodSelectionne = produits[i];
+        }
+    }
 
     var produitExiste = null;
     for (var j = 0; j < panier.length; j++) {
@@ -186,12 +251,13 @@ function ajouterAuPanier(idDuProduit) {
     mettreAJourLeRendu();
 }
 
-// 5. Fonction pour dessiner le tableau du panier
+// Question 16 & 17 : Remplir le tableau du panier et calculer le total général
 function mettreAJourLeRendu() {
     var corpsTableau = document.getElementById("lignes-du-panier");
     var zoneTotal = document.getElementById("total-panier");
     
     if (!corpsTableau) return;
+    
     corpsTableau.innerHTML = "";
     var calculTotal = 0;
 
@@ -203,20 +269,37 @@ function mettreAJourLeRendu() {
         corpsTableau.innerHTML += `
             <tr>
                 <td>${item.name}</td>
-                <td>${item.price} XAF</td>
+                <td>${formatPrice(item.price)}</td>
                 <td>${item.quantite}</td>
-                <td>${sousTotal} XAF</td>
-                <td><button onclick="supprimerDuPanier(${item.id})">Supprimer</button></td>
+                <td>${formatPrice(sousTotal)}</td>
+                <td>
+                    <button onclick="modifierQuantite(${item.id}, 1)">+</button>
+                    <button onclick="modifierQuantite(${item.id}, -1)">-</button>
+                    <button onclick="supprimerDuPanier(${item.id})">Supprimer</button>
+                </td>
             </tr>
         `;
     }
 
     if (zoneTotal) {
-        zoneTotal.textContent = calculTotal;
+        zoneTotal.textContent = formatPrice(calculTotal);
     }
 }
 
-// 6. Fonction pour supprimer un produit du panier
+// Modifier la quantite avec les boutons + et -
+function modifierQuantite(idDuProduit, valeur) {
+    for (var i = 0; i < panier.length; i++) {
+        if (panier[i].id == idDuProduit) {
+            panier[i].quantite = panier[i].quantite + valeur;
+            if (panier[i].quantite <= 0) {
+                panier.splice(i, 1);
+            }
+        }
+    }
+    mettreAJourLeRendu();
+}
+
+// Supprimer completement une ligne du panier
 function supprimerDuPanier(idDuProduit) {
     for (var i = 0; i < panier.length; i++) {
         if (panier[i].id == idDuProduit) {
