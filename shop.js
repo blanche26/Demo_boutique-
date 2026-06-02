@@ -47,18 +47,31 @@ function afficherLeCatalogue(liste) {
     var zoneCatalogue = document.getElementById("charge_produit");
     if (!zoneCatalogue) return;
     
-    zoneCatalogue.innerHTML = "";
     var listeAAfficher = liste || produits;
     
+    var codeHtml = '<table border="1">' +
+        '<thead>' +
+            '<tr>' +
+                '<th>Article</th>' +
+                '<th>Catégorie</th>' +
+                '<th>Prix</th>' +
+                '<th>Action</th>' +
+            '</tr>' +
+        '</thead>' +
+        '<tbody>';
+        
     for (var i = 0; i < listeAAfficher.length; i++) {
         var p = listeAAfficher[i];
-        zoneCatalogue.innerHTML += '<div class="carte-produit">' +
-            '<h3>' + p.name + '</h3>' +
-            '<p>Catégorie : ' + p.category + '</p>' +
-            '<p>Prix : ' + formatPrice(p.price) + '</p>' +
-            '<button onclick="ajouterAuPanier(' + p.id + ')">Ajouter</button>' +
-        '</div>';
+        codeHtml += '<tr>' +
+            '<td>' + p.name + '</td>' +
+            '<td>' + p.category + '</td>' +
+            '<td>' + formatPrice(p.price) + '</td>' +
+            '<td><button onclick="ajouterAuPanier(' + p.id + ')">Ajouter</button></td>' +
+        '</tr>';
     }
+    
+    codeHtml += '</tbody></table>';
+    zoneCatalogue.innerHTML = codeHtml;
 }
 
 function ajouterAuPanier(idDuProduit) {
