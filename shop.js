@@ -30,11 +30,18 @@ function chargerProduits() {
         })
         .catch(function(erreur) {
             console.log("Erreur JSON, utilisation des données de secours");
-            produits = [
-                {id: 1, name: "Gants", category: "Mode", price: 2000},
-                {id: 2, name: "Bijou Fantaisie", category: "Accessoires", price: 6000},
-                {id: 3, name: "Casquette stylee", category: "Mode", price: 7000}
-            ];
+            // CHERCHE CE MORCEAU EXACT DANS TON SHOP.JS ACTUEL :
+produits = [
+    {id: 1, name: "Gants", category: "Mode", price: 2000},
+    {id: 2, name: "Bijou Fantaisie", category: "Accessoires", price: 6000},
+    {id: 3, name: "Casquette stylee", category: "Mode", price: 7000} // <-- AJOUTE UNE VIRGULE ICI
+    // ET COLLE JUSTE CES NOUVELLES LIGNES EN DESSOUS :
+    {id: 4, name: "Smartphone X", category: "Electronique", price: 150000},
+    {id: 5, name: "Casque Audio", category: "Electronique", price: 25000},
+    {id: 6, name: "Ordinateur Portable", category: "Electronique", price: 350000},
+    {id: 7, name: "Sac a dos", category: "Accessoires", price: 15000},
+    {id: 8, name: "Chaussures de sport", category: "Mode", price: 25000}
+];
             afficherLeCatalogue(produits);
         });
 }
