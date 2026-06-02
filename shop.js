@@ -118,6 +118,36 @@ function chargerProduits() {
 }
 
 function formatPrice(prix) {
+    returnvar produits = [];
+var panier = [];
+
+window.onload = function() {
+    chargerProduits();
+    var barre = document.getElementById("barre-recherche");
+    if (barre) {
+        barre.oninput = function() {
+            var saisie = barre.value.toLowerCase();
+            var resultatFiltre = [];
+            for (var i = 0; i < produits.length; i++) {
+                if (produits[i].name.toLowerCase().indexOf(saisie) !== -1) {
+                    resultatFiltre.push(produits[i]);
+                }
+            }
+            afficherLeCatalogue(resultatFiltre);
+        };
+    }
+};
+
+function chargerProduits() {
+    fetch("products.json")
+        .then(function(reponse) { return reponse.json(); })
+        .then(function(donnees) {
+            produits = donnees;
+            afficherLeCatalogue(produits);
+        });
+}
+
+function formatPrice(prix) {
     return prix + " XAF";
 }
 
@@ -137,8 +167,6 @@ function afficherLeCatalogue(liste) {
         '</div>';
     }
 }
-
-// --- VOTRE PANIER (INTOUCHÉ ET SÉCURISÉ) ---
 
 function ajouterAuPanier(idDuProduit) {
     var prodSelectionne = null;
