@@ -1,76 +1,169 @@
 
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Boutique Demo - Accueil</title>
-    <link rel="Stylesheet" href="Style.css">
-    <meta name="description" content="Bienvenue sur notre boutique en ligne fictive.">
+    <title>Ma Boutique</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
     <header>
-        <div class="logo">
-            <h1>Boutique Demo</h1>
-        </div>
-        <nav>
-            <ul>
-                <li><a href="#accueil">Accueil</a></li>
-                <li><a href="#catalogue">Catalogue</a></li>
-                <li><a href="#panier">Panier</a></li>
-                <li><a href="connexion.html">Connexion</a></li>
-            </ul>
-        </nav>
+        <h1>Boutique Demo</h1>
     </header>
 
     <main>
-        <section id="accueil">
-            <h2>Bienvenue</h2>
-            <p>Découvrez notre sélection de produits.</p>
+        <section id="catalogue" style="margin: 20px 0;">
+            <h2>Catalogue des produits</h2>
+            <div id="charge_produit">
+                </div>
         </section>
 
-        <section id="catalogue">
-            <h2>Catalogue</h2>
-            <div id="filtres">
-                <input type="text" placeholder="Rechercher un produit..." oninput="filtrerProduits(this.value)">
-                
-                <select id="categorie">
-                    <option value="all">Toutes catégories</option>
-                </select>
-            </div>
-            <div id="grille-produits" class="grid-container"></div>
+        <section id="panier" style="margin-top: 30px; padding: 10px; background-color: #eee;">
+            <h2>Votre Panier</h2>
+            
+            <table border="1" style="width: 100%; border-collapse: collapse; background-color: white;">
+                <thead>
+                    <tr style="background-color: #007bff; color: white;">
+                        <th>Article</th>
+                        <th>Prix unitaire</th>
+                        <th>Quantité</th>
+                        <th>Sous-total</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="lignes-du-panier">
+                    </tbody>
+            </table>
+
+            <p style="font-size: 18px; font-weight: bold; margin-top: 15px;">
+                Total général : <span id="total-panier">0</span> XAF
+            </p>
+            
+            <button id="vider-panier" style="background-color: red; color: white; padding: 5px 10px;">
+                Vider le panier
+            </button>
         </section>
-
-                <section id="panier">
-    <h2>Mon Panier</h2>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Article</th>
-                <th>Prix unitaire</th>
-                <th>Quantité</th>
-                <th>Sous-total</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody id="lignes-du-panier">
-            </tbody>
-    </table>
-
-    <p>Total général : <strong id="total-panier">0</strong> XAF</p>
-    <button id="vider-panier">Vider le panier</button>
-</section>
-
     </main>
 
-    <footer>
-        <p>&copy; 2026 Boutique Demo - Tous droits réservés.</p>
-    </footer>
+    <script>
+        // Liste des produits écrite directement ici
+        var produits = [
+            {id: 1, name: "Gants", category: "Mode", price: 2000},
+            {id: 2, name: "Bijou Fantaisie", category: "Accessoires", price: 6000},
+            {id: 3, name: "Casquette stylee", category: "Mode", price: 7000}
+        ];
 
-    <script src="shop.js"></script>
+        var panier = [];
+
+        // Lance l'affichage dès que la page s'ouvre
+        window.onload = function() {
+            afficherLeCatalogue();
+        };
+
+        // Affiche les produits sous forme de blocs
+        function afficherLeCatalogue() {
+            var zoneCatalogue = document.getElementById("charge_produit");
+            if (!zoneCatalogue) return;
+            
+            zoneCatalogue.innerHTML = "";
+            
+            for (var i = 0; i < produits.length; i++) {
+                var p = produits[i];
+                
+                zoneCatalogue.innerHTML += `
+                    <div class="carte-produit" style="border: 1px solid #000; margin: 10px; padding: 10px; background: white;">
+                        <h4>${p.name}</h4>
+                        <p>Catégorie : ${p.category}</p>
+                        <p>Prix : ${p.price} XAF</p>
+                        <button onclick="ajouterAuPanier(${p.id})" style="background: #007bff; color: white; border: none; padding: 5px 10px; cursor: pointer;">
+                            Ajouter au panier
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        // Ajouter au panier
+        function ajouterAuPanier(idDuProduit) {
+            var prodSelectionne = null;
+            for (var i = 0; i < produits.length; i++) {
+                if (produits[i].id == idDuProduit) {
+                    prodSelectionne = produits[i];
+                }
+            }
+
+            var produitExiste = null;
+            for (var j = 0; j < panier.length; j++) {
+                if (panier[j].id == idDuProduit) {
+                    produitExiste = panier[j];
+                }
+            }
+
+            if (produitExiste != null) {
+                produitExiste.quantite++;
+            } else {
+                panier.push({
+                    id: prodSelectionne.id,
+                    name: prodSelectionne.name,
+                    price: prodSelectionne.price,
+                    quantite: 1
+                });
+            }
+            mettreAJourLeRendu();
+        }
+
+        // Met à jour le tableau HTML du panier
+        function mettreAJourLeRendu() {
+            var corpsTableau = document.getElementById("lignes-du-panier");
+            var zoneTotal = document.getElementById("total-panier");
+            
+            if (!corpsTableau) return;
+            corpsTableau.innerHTML = "";
+            var calculTotal = 0;
+
+            for (var i = 0; i < panier.length; i++) {
+                var item = panier[i];
+                var sousTotal = item.price * item.quantite;
+                calculTotal = calculTotal + sousTotal;
+
+                corpsTableau.innerHTML += `
+                    <tr>
+                        <td>${item.name}</td>
+                        <td>${item.price} XAF</td>
+                        <td>${item.quantite}</td>
+                        <td>${sousTotal} XAF</td>
+                        <td>
+                            <button onclick="modifierQuantite(${item.id}, 1)">+</button>
+                            <button onclick="modifierQuantite(${item.id}, -1)">-</button>
+                        </td>
+                    </tr>
+                `;
+            }
+
+            if (zoneTotal) {
+                zoneTotal.textContent = calculTotal;
+            }
+        }
+
+        // Modifier les quantités (+ / -)
+        function modifierQuantite(idDuProduit, valeur) {
+            for (var i = 0; i < panier.length; i++) {
+                if (panier[i].id == idDuProduit) {
+                    panier[i].quantite = panier[i].quantite + valeur;
+                    if (panier[i].quantite <= 0) {
+                        panier.splice(i, 1);
+                    }
+                }
+            }
+            mettreAJourLeRendu();
+        }
+
+        // Vider le panier
+        document.getElementById("vider-panier").onclick = function() {
+            panier = [];
+            mettreAJourLeRendu();
+        };
+    </script>
 </body>
-
 </html>
