@@ -1,61 +1,123 @@
-/* Mon fichier CSS pour la boutique */
-
-
-/* Pour bien voir les blocs, j'ai mis des couleurs partout */
-
 body {
-    font-family: Arial;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: snow;
+    color: darkslategray;
+    font-size: 22px;
+}
+
+header {
+    background-color: lightsteelblue;
+    color: black;
+    padding: 20px;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 32px;
+    color: black;
+}
+
+header ul {
+    list-style: none;
+    padding: 0;
+    margin: 15px 0 0 0;
+}
+
+header ul li {
+    display: inline;
+    margin: 0 15px;
+}
+
+header ul li a {
+    color: black;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+main {
+    padding: 20px;
+}
+
+h2 {
+    color: darkslategrey;
+    font-size: 28px;
+    border-bottom: 3px solid lightsteelblue;
+    padding-bottom: 8px;
+    margin-top: 30px;
+}
+
+.zone-filtres {
+    margin-bottom: 20px;
+}
+
+#barre-recherche, #choix-categorie {
+    padding: 15px;
+    font-size: 20px;
+    width: 95%;
+    margin-bottom: 15px;
+    border: 2px solid lightgray;
+    border-radius: 8px;
     background-color: white;
 }
 
-
-/* Le haut de la page, en rouge pour le repérer */
-
-header {
-    background-color: red;
-    color: white;
-    text-align: center;
-    padding: 20px;
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: white;
+    font-size: 18px;
 }
 
+th, td {
+    border: 2px solid lightgray;
+    padding: 15px 10px;
+    text-align: left;
+}
 
-/* Mes sections, en bleu pour voir leurs limites */
+th {
+    background-color: lightsteelblue;
+    color: black;
+    font-size: 20px;
+}
 
-section {
-    padding: 20px;
-    margin: 20px;
-    border: 2px solid blue;
+button {
     background-color: lightblue;
+    color: black;
+    border: 2px solid lightskyblue;
+    padding: 10px 20px;
+    font-size: 18px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
 }
 
-
-/* La zone de la grille, en vert pour voir le conteneur */
-
-.grid-container {
-    display: flex;
-    flex-wrap: wrap;
-    background-color: green;
-    padding: 15px;
-    gap: 10px;
-    /* Pour espacer mes cartes */
+#panier {
+    margin-top: 50px;
+    padding: 20px;
+    background-color: gainsboro;
+    border-radius: 10px;
 }
 
-
-/* Une seule carte de produit, en jaune */
-
-.produit-card {
-    border: 2px solid orange;
-    background-color: yellow;
-    padding: 10px;
-    width: 200px;
+#panier button {
+    padding: 8px 15px;
+    font-size: 18px;
+    margin-right: 5px;
+    background-color: white;
+    border: 2px solid lightgray;
 }
 
-
-/* Le pied de page, en gris */
-
-footer {
-    background-color: gray;
+#vider-panier {
+    background-color: indianred;
     color: white;
-    text-align: center;
+    border: none;
     padding: 15px;
+    font-size: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+    width: 100%;
+    font-weight: bold;
 }
