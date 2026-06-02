@@ -122,9 +122,101 @@ function modifierQuantite(idDuProduit, valeur) {
         }
     }
     mettreAJourLeRendu();
+// 1. Liste des produits écrite directement ici (Pas besoin de fetch)
+var produits = [
+    {id: 1, name: "Gants", category: "Mode", price: 2000},
+    {id: 2, name: "Bijou Fantaisie", category: "Accessoires", price: 6000},
+    {id: 3, name: "Casquette stylee", category: "Mode", price: 7000}
+];
+
+var panier = [];
+
+// 2. Cette fonction se lance toute seule quand la page s'ouvre
+window.onload = function() {
+    afficherLeCatalogue();
+};
+
+// 3. Fonction pour afficher tes produits
+function afficherLeCatalogue() {
+    var zoneCatalogue = document.getElementById("charge_produit");
+    if (!zoneCatalogue) return;
+    
+    zoneCatalogue.innerHTML = "";
+    
+    for (var i = 0; i < produits.length; i++) {
+        var p = produits[i];
+        
+        zoneCatalogue.innerHTML += `
+            <div class="carte-produit" style="border: 1px solid #000; margin: 10px; padding: 10px;">
+                <h4>${p.name}</h4>
+                <p>Categorie : ${p.category}</p>
+                <p>Prix : ${p.price} XAF</p>
+                <button onclick="ajouterAuPanier(${p.id})">Ajouter au panier</button>
+            </div>
+        `;
+    }
 }
 
-// Supprimer complement une ligne du panier
+// 4. Fonction pour ajouter un produit
+function ajouterAuPanier(idDuProduit) {
+    var prodSelectionne = null;
+    for (var i = 0; i < produits.length; i++) {
+        if (produits[i].id == idDuProduit) {
+            prodSelectionne = produits[i];
+        }
+    }
+
+    var produitExiste = null;
+    for (var j = 0; j < panier.length; j++) {
+        if (panier[j].id == idDuProduit) {
+            produitExiste = panier[j];
+        }
+    }
+
+    if (produitExiste != null) {
+        produitExiste.quantite++;
+    } else {
+        panier.push({
+            id: prodSelectionne.id,
+            name: prodSelectionne.name,
+            price: prodSelectionne.price,
+            quantite: 1
+        });
+    }
+    mettreAJourLeRendu();
+}
+
+// 5. Fonction pour dessiner le tableau du panier
+function mettreAJourLeRendu() {
+    var corpsTableau = document.getElementById("lignes-du-panier");
+    var zoneTotal = document.getElementById("total-panier");
+    
+    if (!corpsTableau) return;
+    corpsTableau.innerHTML = "";
+    var calculTotal = 0;
+
+    for (var i = 0; i < panier.length; i++) {
+        var item = panier[i];
+        var sousTotal = item.price * item.quantite;
+        calculTotal = calculTotal + sousTotal;
+
+        corpsTableau.innerHTML += `
+            <tr>
+                <td>${item.name}</td>
+                <td>${item.price} XAF</td>
+                <td>${item.quantite}</td>
+                <td>${sousTotal} XAF</td>
+                <td><button onclick="supprimerDuPanier(${item.id})">Supprimer</button></td>
+            </tr>
+        `;
+    }
+
+    if (zoneTotal) {
+        zoneTotal.textContent = calculTotal;
+    }
+}
+
+// 6. Fonction pour supprimer un produit du panier
 function supprimerDuPanier(idDuProduit) {
     for (var i = 0; i < panier.length; i++) {
         if (panier[i].id == idDuProduit) {
@@ -132,13 +224,4 @@ function supprimerDuPanier(idDuProduit) {
         }
     }
     mettreAJourLeRendu();
-}
-
-// Bouton Vider le panier
-var boutonVider = document.getElementById("vider-panier");
-if (boutonVider) {
-    boutonVider.onclick = function() {
-        panier = [];
-        mettreAJourLeRendu();
-    };
 }
