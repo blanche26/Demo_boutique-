@@ -44,24 +44,24 @@
             <div id="grille-produits" class="grid-container"></div>
         </section>
 
-        <section id="panier">
+                <section id="panier">
             <h2>Votre Panier</h2>
-            <table id="tableau-panier">
+            <table border="1">
                 <thead>
                     <tr>
-                        <th>Produit</th>
-                        <th>Prix</th>
+                        <th>Article</th>
+                        <th>Prix unitaire</th>
                         <th>Quantité</th>
-                        <th>Action</th>
+                        <th>Sous-total</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
-                <tbody id="panier-body"></tbody>
+                <tbody id="lignes-du-panier">
+                </tbody>
             </table>
-            <div class="total-section">
-                <p>Total : <span id="total-panier">0 XAF</span></p>
-                <p id="zone-total">Total : 0 XAF</p>
-                
-            </div>
+
+            <p>Total général : <strong id="total-panier">0</strong> XAF</p>
+            <button id="vider-panier">Vider le panier</button>
         </section>
     </main>
 
