@@ -1,32 +1,43 @@
-<html>
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
-
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8">
     <title>Connexion - Boutique Demo</title>
-    <link rel="stylesheet" href="Style.css" />
+    <link rel="stylesheet" href="Style.css">
 </head>
-
 <body>
-    <h1>Connexion</h1>
+    <header>
+        <h1>Boutique Demo</h1>
+        <ul>
+            <li><a href="index.html">Accueil</a></li>
+            <li><a href="index.html#catalogue">Catalogue</a></li>
+            <li><a href="index.html#panier">Panier</a></li>
+            <li><a href="#">Connexion</a></li>
+        </ul>
+    </header>
 
-    <!-- Le formulaire -->
-    <form onsubmit="verifierConnexion(event)">
-        <label>Email :</label><br />
-        <input type="text" id="email" required /><br />
+    <main>
+        <div class="boite-connexion">
+            <h2>Espace Connexion</h2>
+            
+            <form onsubmit="verifierConnexion(event)">
+                <div class="groupe-champ">
+                    <label for="email">Email :</label>
+                    <input type="text" id="email" placeholder="Ex: nom@gmail.com" required>
+                </div>
 
-        <label>Mot de passe :</label><br />
-        <input type="password" id="mdp" required /><br />
+                <div class="groupe-champ">
+                    <label for="mdp">Mot de passe :</label>
+                    <input type="password" id="mdp" placeholder="Votre mot de passe" required>
+                </div>
 
-        <button type="submit">Se connecter</button>
-    </form>
+                <button type="submit" class="bouton-connexion">Se connecter</button>
+            </form>
 
-    <!-- La zone de retour pour le succès ou l'erreur -->
-    <div id="message-retour" style="margin-top: 20px; font-weight: bold"></div>
+            <div id="message-retour" style="margin-top: 20px; text-align: center; font-weight: bold;"></div>
+        </div>
+    </main>
 
-    <!-- Le lien vers ton fichier JavaScript -->
     <script src="auth.js"></script>
 </body>
-
 </html>
