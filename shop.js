@@ -10,25 +10,13 @@ window.onload = function() {
 
 // Question 10 : Chargement du fichier JSON avec fetch
 function chargerProduits() {
-    fetch("produit.json")
-        .then(function(reponse) {
-            return reponse.json();
-        })
-        .then(function(donnees) {
-            produits = donnees;
-            afficherLeCatalogue();
-        })
-        .catch(function(erreur) {
-            console.log("Erreur de chargement, utilisation du tableau de secours");
-            // Tableau de secours (fallback en dur si le fetch echoue)
-            produits = [
-                {id: 1, name: "Casquette stylee", category: "Mode", price: 7000, image: "casquette.jpg"},
-                {id: 2, name: "Gants", category: "Mode", price: 2000, image: "gants.jpg"}
-            ];
-            afficherLeCatalogue();
-        });
+    produits = [
+        {id: 1, name: "Gants", category: "Mode", price: 2000},
+        {id: 2, name: "Bijou Fantaisie", category: "Accessoires", price: 6000},
+        {id: 3, name: "Casquette stylee", category: "Mode", price: 7000}
+    ];
+    afficherLeCatalogue();
 }
-
 // Question 11 : Fonction formatPrice(prix)
 function formatPrice(prix) {
     return prix + " XAF";
