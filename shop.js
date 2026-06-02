@@ -1,5 +1,5 @@
-var produits = [];
-var panier = [];
+varproduits = [];
+varpanier = [];
 
 window.onload = function() {
     chargerProduits();
