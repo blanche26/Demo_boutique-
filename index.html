@@ -136,62 +136,66 @@
                     name: prodSelectionne.name,
                     price: prodSelectionne.price,
                     quantite: 1
-                });
-            }
-            mettreAJourLeRendu();
-        }
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Boutique Demo - Accueil</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-        // Met à jour le tableau HTML du panier
-        function mettreAJourLeRendu() {
-            var corpsTableau = document.getElementById("lignes-du-panier");
-            var zoneTotal = document.getElementById("total-panier");
+    <header>
+        <h1>Boutique Demo</h1>
+        <ul>
+            <li><a href="#">Accueil</a></li>
+            <li><a href="#">Catalogue</a></li>
+            <li><a href="#panier">Panier</a></li>
+            <li><a href="#">Connexion</a></li>
+        </ul>
+    </header>
+
+    <main>
+        <section id="bienvenue">
+            <h2>Bienvenue</h2>
+            <p>Découvrez notre sélection de produits.</p>
+        </section>
+
+        <section id="catalogue">
+            <h2>Catalogue</h2>
             
-            if (!corpsTableau) return;
-            corpsTableau.innerHTML = "";
-            var calculTotal = 0;
+            <div class="zone-filtres">
+                <input type="text" id="barre-recherche" placeholder="Rechercher...">
+                <select id="choix-categorie">
+                    <option value="toutes">Toutes catégories</option>
+                    <option value="Mode">Mode</option>
+                    <option value="Accessoires">Accessoires</option>
+                </select>
+            </div>
 
-            for (var i = 0; i < panier.length; i++) {
-                var item = panier[i];
-                var sousTotal = item.price * item.quantite;
-                calculTotal = calculTotal + sousTotal;
+            <div id="charge_produit"></div>
+        </section>
 
-                corpsTableau.innerHTML += `
+        <section id="panier">
+            <h2>Votre Panier</h2>
+            <table border="1">
+                <thead>
                     <tr>
-                        <td>${item.name}</td>
-                        <td>${item.price} XAF</td>
-                        <td>${item.quantite}</td>
-                        <td>${sousTotal} XAF</td>
-                        <td>
-                            <button onclick="modifierQuantite(${item.id}, 1)">+</button>
-                            <button onclick="modifierQuantite(${item.id}, -1)">-</button>
-                        </td>
+                        <th>Article</th>
+                        <th>Prix unitaire</th>
+                        <th>Quantité</th>
+                        <th>Sous-total</th>
+                        <th>Actions</th>
                     </tr>
-                `;
-            }
+                </thead>
+                <tbody id="lignes-du-panier"></tbody>
+            </table>
 
-            if (zoneTotal) {
-                zoneTotal.textContent = calculTotal;
-            }
-        }
+            <p>Total général : <span id="total-panier">0</span> XAF</p>
+            <button id="vider-panier">Vider le panier</button>
+        </section>
+    </main>
 
-        // Modifier les quantités (+ / -)
-        function modifierQuantite(idDuProduit, valeur) {
-            for (var i = 0; i < panier.length; i++) {
-                if (panier[i].id == idDuProduit) {
-                    panier[i].quantite = panier[i].quantite + valeur;
-                    if (panier[i].quantite <= 0) {
-                        panier.splice(i, 1);
-                    }
-                }
-            }
-            mettreAJourLeRendu();
-        }
-
-        // Vider le panier
-        document.getElementById("vider-panier").onclick = function() {
-            panier = [];
-            mettreAJourLeRendu();
-        };
-    </script>
+    <script src="shop.js"></script>
 </body>
-</html> 
+</html>
