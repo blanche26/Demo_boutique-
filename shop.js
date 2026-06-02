@@ -190,8 +190,23 @@ function chargerProduits() {
             produits = [
                 {id: 1, name: "Gants", category: "Mode", price: 2000},
                 {id: 2, name: "Bijou Fantaisie", category: "Accessoires", price: 6000},
-                {id: 3, name: "Casquette stylee", category: "Mode", price: 7000}
-            ];
+// Variables globales pour stocker nos donnees
+var produits = [];
+var panier = [];
+
+// Au chargement de la page, on appelle le fichier JSON
+window.onload = function() {
+    chargerProduits();
+};
+
+// Question 10 : Chargement du fichier JSON avec fetch
+function chargerProduits() {
+    fetch("products.json")
+        .then(function(reponse) {
+            return reponse.json();
+        })
+        .then(function(donnees) {
+            produits = donnees;
             afficherLeCatalogue();
         });
 }
@@ -208,17 +223,16 @@ function afficherLeCatalogue() {
     
     zoneCatalogue.innerHTML = "";
     
+    // Concaténation classique de L1 avec des guillemets simples et des '+'
     for (var i = 0; i < produits.length; i++) {
         var p = produits[i];
         
-        zoneCatalogue.innerHTML += `
-            <div class="carte-produit" style="border: 1px solid #000; margin: 10px; padding: 10px; background: white;">
-                <h4>${p.name}</h4>
-                <p>Categorie : ${p.category}</p>
-                <p>Prix : ${formatPrice(p.price)}</p>
-                <button onclick="ajouterAuPanier(${p.id})">Ajouter au panier</button>
-            </div>
-        `;
+        zoneCatalogue.innerHTML += '<div class="carte-produit">' +
+            '<h4>' + p.name + '</h4>' +
+            '<p>Categorie : ' + p.category + '</p> +
+            '<p>Prix : ' + formatPrice(p.price) + '</p>' +
+            '<button onclick="ajouterAuPanier(' + p.id + ')">Ajouter au panier</button>' +
+        '</div>';
     }
 }
 
@@ -261,24 +275,22 @@ function mettreAJourLeRendu() {
     corpsTableau.innerHTML = "";
     var calculTotal = 0;
 
+    // Concaténation pure de L1 pour chaque ligne de tableau `<tr>`
     for (var i = 0; i < panier.length; i++) {
         var item = panier[i];
         var sousTotal = item.price * item.quantite;
         calculTotal = calculTotal + sousTotal;
 
-        corpsTableau.innerHTML += `
-            <tr>
-                <td>${item.name}</td>
-                <td>${formatPrice(item.price)}</td>
-                <td>${item.quantite}</td>
-                <td>${formatPrice(sousTotal)}</td>
-                <td>
-                    <button onclick="modifierQuantite(${item.id}, 1)">+</button>
-                    <button onclick="modifierQuantite(${item.id}, -1)">-</button>
-                    <button onclick="supprimerDuPanier(${item.id})">Supprimer</button>
-                </td>
-            </tr>
-        `;
+        corpsTableau.innerHTML += '<tr>' +
+            '<td>' + item.name + '</td>' +
+            '<td>' + formatPrice(item.price) + '</td>' +
+            '<td>' + item.quantite + '</td>' +
+            '<td>' + formatPrice(sousTotal) + '</td>' +
+            '<td>' +
+                '<button onclick="modifierQuantite(' + item.id + ', 1)">+</button>' +
+                '<button onclick="modifierQuantite(' + item.id + ', -1)">-</button>' +
+            '</td>' +
+        '</tr>';
     }
 
     if (zoneTotal) {
@@ -299,12 +311,11 @@ function modifierQuantite(idDuProduit, valeur) {
     mettreAJourLeRendu();
 }
 
-// Supprimer completement une ligne du panier
-function supprimerDuPanier(idDuProduit) {
-    for (var i = 0; i < panier.length; i++) {
-        if (panier[i].id == idDuProduit) {
-            panier.splice(i, 1);
-        }
-    }
-    mettreAJourLeRendu();
+// Vider le panier complet
+var boutonVider = document.getElementById("vider-panier");
+if (boutonVider) {
+    boutonVider.onclick = function() {
+        panier = [];
+        mettreAJourLeRendu();
+    };
 }
