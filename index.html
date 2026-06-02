@@ -12,10 +12,20 @@
     </header>
 
     <main>
-        <section id="catalogue" style="margin: 20px 0;">
-            <h2>Catalogue des produits</h2>
-            <div id="charge_produit"></div>
-        </section>
+        <section id="catalogue">
+    <h2>Catalogue</h2>
+    
+    <div class="zone-filtres">
+        <input type="text" id="barre-recherche" placeholder="Rechercher...">
+        <select id="choix-categorie">
+            <option value="toutes">Toutes catégories</option>
+            <option value="Mode">Mode</option>
+            <option value="Accessoires">Accessoires</option>
+        </select>
+    </div>
+
+    <div id="charge_produit"></div>
+</section>
 
         <section id="panier" style="margin-top: 30px; padding: 10px; background-color: #eee;">
             <h2>Votre Panier</h2>
