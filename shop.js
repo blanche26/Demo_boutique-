@@ -10,7 +10,7 @@ window.onload = function() {
 
 // Question 10 : Chargement du fichier JSON avec fetch
 function chargerProduits() {
-    fetch("products.json")
+    fetch("produit.json")
         .then(function(reponse) {
             return reponse.json();
         })
