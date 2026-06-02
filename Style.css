@@ -121,3 +121,6 @@ button {
     width: 100%;
     font-weight: bold;
 }
+html {
+    scroll-behavior: smooth;
+}
